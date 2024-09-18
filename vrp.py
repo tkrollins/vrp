@@ -3,6 +3,7 @@ from dataclasses import dataclass, field
 import argparse
 from typing import List
 
+
 @dataclass
 class Waypoint:
     x: float
@@ -11,13 +12,16 @@ class Waypoint:
     def distance(self, point: "Waypoint") -> float:
         return math.hypot(point.x - self.x, point.y - self.y)
 
+
 DEPOT = Waypoint(0.0, 0.0)
+
 
 @dataclass
 class Load:
     id: str
     pickup: Waypoint
     dropoff: Waypoint
+
 
 @dataclass
 class Driver:
@@ -38,7 +42,7 @@ class Driver:
         for i in range(len(self.stops) - 1):
             total_time += self.stops[i].distance(self.stops[i + 1])
         return total_time
-    
+
 
 def read_loads(filename: str) -> List[Load]:
     loads = []
@@ -60,8 +64,7 @@ def main():
     parser.add_argument("filename", help="Path to the problem txt file")
     args = parser.parse_args()
 
-    loads = read_loads(args.filename)
-    unassigned_loads = loads.copy()
+    unassigned_loads = read_loads(args.filename)
     drivers: List[Driver] = []
 
     while unassigned_loads:
@@ -72,7 +75,7 @@ def main():
             nearest_load = min(
                 unassigned_loads,
                 key=lambda load: current_location.distance(load.pickup),
-                default=None
+                default=None,
             )
             if nearest_load is None:
                 break
